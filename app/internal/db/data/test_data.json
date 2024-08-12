@@ -1,0 +1,29 @@
+{
+  "1": {
+        "login": "MonkaS",
+        "password": "123",
+        "last_name": "naumov",
+        "first_name": "danya",
+        "middle_name": "alexeevich",
+        "birth_date": "25.01.2005",
+        "work_experience": 1
+    },
+  "2": {
+        "login": "Fedya6",
+        "password": "1234",
+        "last_name": "volkov",
+        "first_name": "fedya",
+        "middle_name": "hzkov",
+        "birth_date": "12.03.2009",
+        "work_experience": 0
+    },
+  "3": {
+        "login": "Vlastelin_Sobitiy",
+        "password": "12345",
+        "last_name": "Dudka",
+        "first_name": "Trubnik",
+        "middle_name": "hzhzhzhz",
+        "birth_date": "01.02.2000",
+        "work_experience": 3
+    }
+}
