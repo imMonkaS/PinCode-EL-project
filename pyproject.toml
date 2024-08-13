@@ -9,6 +9,7 @@ python = "~3.12"
 uvicorn = {extras = ["standard"], version = "^0.30.5"}
 fastapi = {extras = ["standard"], version = "^0.112.0"}
 pytest = "^8.3.2"
+python-dateutil = "^2.9.0.post0"
 
 
 [build-system]

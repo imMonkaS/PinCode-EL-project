@@ -1,6 +1,8 @@
-from datetime import datetime
+from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 
 from internal.db.db import Database
+from routers.user.schemas.response.get import GetUserResponse
 
 
 class UserService:
@@ -9,7 +11,7 @@ class UserService:
             login: str,
             password: str,
             first_name: str,
-            birthdate: datetime.date,
+            birth_date: date,
             last_name: str = None,
             middle_name: str = None,
             work_experience: int = 0,
@@ -18,29 +20,51 @@ class UserService:
             'login': login,
             'password': password,
             'first_name': first_name,
-            'birthdate': birthdate,
+            'birth_date': birth_date,
             'last_name': last_name,
             'middle_name': middle_name,
             'work_experience': work_experience
         }
 
         data = {key: value for key, value in data.items() if value is not None}
-        Database.add_data(**data)
+        Database.create_data(**data)
 
     @staticmethod
-    def get_one(
+    def get_by_id(user_id: str) -> GetUserResponse:
+        try:
+            user_data = Database.get_user(user_id).copy()
 
-    ):
-        pass
+            user_data.pop('password')
+            user_data['age'] = relativedelta(datetime.today(), user_data['birth_date']).years
+
+            return GetUserResponse.model_validate(user_data)
+        except Exception as e:
+            raise e
 
     @staticmethod
-    def update(
-
+    def update_by_id(
+            user_id: str,
+            login: str = None,
+            password: str = None,
+            first_name: str = None,
+            birth_date: date = None,
+            last_name: str = None,
+            middle_name: str = None,
+            work_experience: int = None,
     ):
-        pass
+        data = {
+            'login': login,
+            'password': password,
+            'first_name': first_name,
+            'birth_date': birth_date,
+            'last_name': last_name,
+            'middle_name': middle_name,
+            'work_experience': work_experience
+        }
+
+        data = {key: value for key, value in data.items() if value is not None}
+        Database.change_data(user_id, **data)
 
     @staticmethod
-    def delete(
-
-    ):
-        pass
+    def delete_by_id(user_id: str):
+        Database.delete_user(user_id)
