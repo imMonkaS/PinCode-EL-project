@@ -11,11 +11,12 @@ class Database:
     USERS_DATABASE: dict[str, dict[str, any]] = {}
 
     @staticmethod
-    def create_data(**kwargs):
+    def create_data(**kwargs) -> str:
         new_id = str(int(list(Database.USERS_DATABASE.keys())[-1]) + 1) if len(Database.USERS_DATABASE.keys()) != 0 else '0'
         Database.USERS_DATABASE[new_id] = {}
         for key, value in kwargs.items():
             Database.USERS_DATABASE[new_id][key] = value
+        return new_id
 
     @staticmethod
     def change_data(user_id: str, **kwargs):

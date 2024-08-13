@@ -15,7 +15,7 @@ class UserService:
             last_name: str = None,
             middle_name: str = None,
             work_experience: int = 0,
-    ):
+    ) -> str:
         data = {
             'login': login,
             'password': password,
@@ -27,7 +27,8 @@ class UserService:
         }
 
         data = {key: value for key, value in data.items() if value is not None}
-        Database.create_data(**data)
+        user_id = Database.create_data(**data)
+        return user_id
 
     @staticmethod
     def get_by_id(user_id: str) -> GetUserResponse:

@@ -15,8 +15,10 @@ def register_user_profile(
         request_data: CreateProfileRequest
 ):
     us = UserService()
-    us.create(**request_data.model_dump())
-    return 'User created'
+    user_id = us.create(**request_data.model_dump())
+    return {
+        'user_id': user_id
+    }
 
 
 # get
