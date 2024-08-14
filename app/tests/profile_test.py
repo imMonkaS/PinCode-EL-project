@@ -1,16 +1,4 @@
-from internal.repositories.db.db import UserDatabase
 from tests import client
-
-UserDatabase.fill_database_with_test_data()
-get_test_data = {
-    'login': 'MonkaS',
-    'last_name': 'naumov',
-    'first_name': 'danya',
-    'middle_name': 'alexeevich',
-    'birth_date': '2005-01-25',
-    'work_experience': 1,
-    'age': 19
-}
 
 create_test_data = {
     'login': 'login',
@@ -38,6 +26,7 @@ create_test_data_least_params = {
     'first_name': 'first_name',
     'birth_date': '1998-08-20',
 }
+
 get_create_test_data_least_params = {
     'login': 'login',
     'last_name': None,
@@ -48,12 +37,24 @@ get_create_test_data_least_params = {
     'age': 25
 }
 
-
-# create
-def test_get_user():
-    response = client.get('/user/profile/0')
-    assert response.status_code == 200
-    assert response.json() == get_test_data
+validation_error_response = {
+    'error': 'Pydantic validation error',
+    'detail': [
+        {
+            'type': 'missing',
+            'loc': [
+                'body',
+                'password'
+            ],
+            'msg': 'Field required',
+            'input': {
+                'login': 'string',
+                'first_name': 'string',
+                'birth_date': '2024-08-14'
+            }
+        }
+    ]
+}
 
 
 def test_create_user():
@@ -122,3 +123,21 @@ def test_delete_user():
     assert get_response.json() == {
         'detail': 'User does not exist'
     }
+
+
+def test_get_not_exist_user():
+    get_response = client.get('/user/profile/9999999')
+    assert get_response.status_code == 404
+    assert get_response.json() == {
+        'detail': 'User does not exist'
+    }
+
+
+def test_validation_error():
+    post_response = client.post('/user/profile/', json={
+        'login': 'string',
+        'first_name': 'string',
+        'birth_date': '2024-08-14'
+    })
+    assert post_response.status_code == 422
+    assert post_response.json() == validation_error_response
