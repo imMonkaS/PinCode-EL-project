@@ -2,7 +2,7 @@ from datetime import date, datetime
 
 from dateutil.relativedelta import relativedelta
 from internal.repositories.db.user import UserRepository
-from internal.routers.user.schemas.response.get import GetUserResponse
+from internal.routers.user.schemas.response import GetUserResponse
 
 
 class UserService:

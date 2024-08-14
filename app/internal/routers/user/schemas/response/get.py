@@ -1,4 +1,4 @@
-from internal.repositories.db.models.baseuser import BaseUser
+from internal.repositories.db.models import BaseUser
 
 
 class GetUserResponse(BaseUser):

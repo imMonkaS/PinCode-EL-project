@@ -2,8 +2,8 @@ import json
 from datetime import date
 
 from config.config import APP_DIR
-from internal.routers.user.schemas.request.create import CreateProfileRequest
-from internal.routers.user.schemas.request.update import UpdateUserRequest
+from internal.routers.user.schemas.request import (CreateProfileRequest,
+                                                   UpdateUserRequest)
 
 
 class UserDatabase:

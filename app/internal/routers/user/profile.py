@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from internal.dependencies.user import UserServiceDependency
-from internal.routers.user.schemas.request.create import CreateProfileRequest
-from internal.routers.user.schemas.request.update import UpdateUserRequest
-from internal.routers.user.schemas.response.get import GetUserResponse
+from internal.routers.user.schemas.request import (CreateProfileRequest,
+                                                   UpdateUserRequest)
+from internal.routers.user.schemas.response import GetUserResponse
 
 user_profile_router = APIRouter(
     prefix='/profile',

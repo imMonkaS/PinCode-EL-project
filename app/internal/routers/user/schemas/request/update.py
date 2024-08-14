@@ -1,6 +1,6 @@
 from datetime import date
 
-from internal.repositories.db.models.baseuser import BaseUser
+from internal.repositories.db.models import BaseUser
 
 
 class UpdateUserRequest(BaseUser, validate_assignment=True):
