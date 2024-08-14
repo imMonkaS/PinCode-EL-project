@@ -61,7 +61,7 @@ def replace_user_profile(
 
 
 # delete
-@user_profile_router.post('/{id}')
+@user_profile_router.delete('/{id}')
 def delete_user_profile(
         id: int,
         service: UserServiceDependency

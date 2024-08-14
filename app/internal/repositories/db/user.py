@@ -1,5 +1,6 @@
 from datetime import date
 
+from fastapi import HTTPException
 from internal.repositories.db.db import UserDatabase
 
 
@@ -31,7 +32,10 @@ class UserRepository:
         return user_id
 
     def get_one(self, user_id: int) -> dict[str, any]:
-        return self.db.get_user(user_id)
+        try:
+            return self.db.get_user(user_id)
+        except KeyError:
+            raise HTTPException(status_code=404, detail='User does not exist')
 
     def update(
             self,
