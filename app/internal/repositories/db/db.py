@@ -8,8 +8,10 @@ from internal.routers.user.schemas.request import (CreateProfileRequest,
 
 class UserDatabase:
     """
-    Класс базs данных
+    Класс базs данных пользователя с авто-инкриментом, id - PK. По сути имитация настоящей бд.
+    Выполняет CRUD-операции. Все операции, а также считывание тестовых данных валидируется при помощи pydantic
     """
+
     _counter: int = 0
     _USERS_DATABASE: dict[int, dict[str, any]] = {}
 
@@ -24,6 +26,13 @@ class UserDatabase:
             middle_name: str = None,
             work_experience: int = 0,
     ) -> int:
+        """
+        Добавить пользователя в бд.
+
+        Returns:
+            id созданного пользователя
+        """
+
         new_id = cls._counter
         cls._counter += 1
 
@@ -42,6 +51,13 @@ class UserDatabase:
 
     @classmethod
     def get_user(cls, user_id: int) -> dict[str, any]:
+        """
+        По id пользователя возвращает информацию о нем
+
+        Returns:
+            Информация о пользователе
+        """
+
         return cls._USERS_DATABASE[user_id]
 
     @classmethod
@@ -56,6 +72,13 @@ class UserDatabase:
             middle_name: str = None,
             work_experience: int = 0,
     ) -> int:
+        """
+        Полностью заменяет информацию о пользователе по id
+
+        Returns:
+            id по которому заменили пользователя
+        """
+
         model = CreateProfileRequest(
             login=login,
             password=password,
@@ -81,6 +104,13 @@ class UserDatabase:
             middle_name: str = None,
             work_experience: int = None,
     ) -> int:
+        """
+        Обновить выборочные поля информации о пользователе.
+
+        Returns:
+            Количество измененных полей.
+        """
+
         tmp_model = UpdateUserRequest.model_validate(cls._USERS_DATABASE[user_id])
         changes_counter = 0
         if login:
@@ -115,6 +145,13 @@ class UserDatabase:
 
     @classmethod
     def delete_user(cls, user_id: int) -> int:
+        """
+        Удаляет пользователя из базы данных по id
+
+        Returns:
+            id который был у удаленного пользователя
+        """
+
         cls._USERS_DATABASE.pop(user_id)
         return user_id
 
@@ -127,6 +164,7 @@ class UserDatabase:
         Returns:
             None
         """
+
         with open(f'{APP_DIR}/internal/repositories/db/data/test_data.json', 'r') as file:
             test_data = json.load(file)
         for key in test_data.keys():
