@@ -1,8 +1,8 @@
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
-from internal.db.db import Database
-from routers.user.schemas.response.get import GetUserResponse
+from internal.repositories.db.db import Database
+from internal.routers.user.schemas.response.get import GetUserResponse
 
 
 class UserService:
@@ -37,7 +37,8 @@ class UserService:
 
             user_data.pop('password')
             user_data['age'] = relativedelta(datetime.today(), user_data['birth_date']).years
-
+            print(user_data)
+            print(GetUserResponse.model_json_schema())
             return GetUserResponse.model_validate(user_data)
         except Exception as e:
             raise e

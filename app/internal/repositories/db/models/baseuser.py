@@ -3,11 +3,10 @@ from datetime import date
 from pydantic import BaseModel
 
 
-class GetUserResponse(BaseModel):
+class BaseUser(BaseModel):
     login: str
     last_name: str | None = None
     first_name: str
     middle_name: str | None = None
     birth_date: date
-    work_experience: int
-    age: int
+    work_experience: int = 0

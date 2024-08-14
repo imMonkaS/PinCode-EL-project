@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from routers.user.profile import user_profile_router
+from internal.routers.user.profile import user_profile_router
 
 user_router = APIRouter(
     prefix='/user'

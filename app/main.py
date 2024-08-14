@@ -3,7 +3,7 @@ import sys
 import uvicorn
 
 from config.config import config
-from internal.db.db import Database
+from internal.repositories.db.db import Database
 
 
 def main():

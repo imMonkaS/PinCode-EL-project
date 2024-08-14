@@ -40,7 +40,7 @@ class Database:
         Returns:
             None
         """
-        with open(f'{APP_DIR}/internal/db/data/test_data.json', 'r') as file:
+        with open(f'{APP_DIR}/internal/repositories/db/data/test_data.json', 'r') as file:
             Database.USERS_DATABASE = json.load(file)
         for key in Database.USERS_DATABASE.keys():
             Database.USERS_DATABASE[key]['birth_date'] = datetime.strptime(Database.USERS_DATABASE[key]['birth_date'], "%Y-%m-%d").date()

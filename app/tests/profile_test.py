@@ -1,6 +1,4 @@
-from datetime import date
-
-from internal.db.db import Database
+from internal.repositories.db.db import Database
 from tests import client
 
 
