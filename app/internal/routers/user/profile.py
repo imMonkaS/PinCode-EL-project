@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from internal.dependencies.user import UserServiceDependency
 from internal.routers.user.schemas.request.create import CreateProfileRequest
+from internal.routers.user.schemas.request.update import UpdateUserRequest
 from internal.routers.user.schemas.response.get import GetUserResponse
 
 user_profile_router = APIRouter(
@@ -17,7 +18,8 @@ def register_user_profile(
 ):
     user_id = service.create(**request_data.model_dump())
     return {
-        'user_id': user_id
+        'user_id': user_id,
+        'action': 'Created'
     }
 
 
@@ -32,19 +34,30 @@ def get_user_profile(
 
 # update
 @user_profile_router.patch('/{id}')
-def patch_update_user_profile(
+def update_user_profile(
         id: int,
+        request_data: UpdateUserRequest,
         service: UserServiceDependency
 ):
-    pass
+    updates = service.update_by_id(id, **request_data.model_dump())
+    return {
+        'user_id': id,
+        'action': 'Updated',
+        'Updates_amount': updates
+    }
 
 
 @user_profile_router.put('/{id}')
-def put_update_register_user_profile(
+def replace_user_profile(
         id: int,
+        request_data: UpdateUserRequest,
         service: UserServiceDependency
 ):
-    pass
+    user_id = service.replace_by_id(id, **request_data.model_dump())
+    return {
+        'user_id': user_id,
+        'action': 'Replaced',
+    }
 
 
 # delete
@@ -53,4 +66,8 @@ def delete_user_profile(
         id: int,
         service: UserServiceDependency
 ):
-    pass
+    user_id = service.delete_by_id(id)
+    return {
+        'user_id': user_id,
+        'action': 'Deleted'
+    }
