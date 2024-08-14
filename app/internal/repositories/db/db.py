@@ -1,38 +1,68 @@
 import json
-from datetime import datetime
+from datetime import datetime, date
 
 from config.config import APP_DIR
+from internal.routers.user.schemas.request.create import CreateProfileRequest
 
 
-class Database:
+class UserDatabase:
     """
-    Класс базs данных, по сути просто нужен для объединения базы данных и методов для взаимодействия с ней
+    Класс базs данных
     """
-    USERS_DATABASE: dict[str, dict[str, any]] = {}
+    _counter: int = 0
+    _USERS_DATABASE: dict[int, dict[str, any]] = {}
 
-    @staticmethod
-    def create_data(**kwargs) -> str:
-        new_id = str(int(list(Database.USERS_DATABASE.keys())[-1]) + 1) if len(Database.USERS_DATABASE.keys()) != 0 else '0'
-        Database.USERS_DATABASE[new_id] = {}
-        for key, value in kwargs.items():
-            Database.USERS_DATABASE[new_id][key] = value
+    @classmethod
+    def create_user(
+            cls,
+            login: str,
+            password: str,
+            first_name: str,
+            birth_date: date,
+            last_name: str = None,
+            middle_name: str = None,
+            work_experience: int = 0,
+    ) -> int:
+        new_id = cls._counter
+        cls._counter += 1
+
+        model = CreateProfileRequest(
+            login=login,
+            password=password,
+            first_name=first_name,
+            birth_date=birth_date,
+            last_name=last_name,
+            middle_name=middle_name,
+            work_experience=work_experience
+        )
+
+        cls._USERS_DATABASE[new_id] = model.model_dump()
         return new_id
 
-    @staticmethod
-    def change_data(user_id: str, **kwargs):
-        for key, value in kwargs.items():
-            Database.USERS_DATABASE[user_id][key] = value
+    @classmethod
+    def get_user(cls, user_id: int) -> dict[str, any]:
+        return cls._USERS_DATABASE[user_id]
 
-    @staticmethod
-    def delete_user(user_id: str):
-        Database.USERS_DATABASE.pop(user_id)
+    # @classmethod
+    # def change_user(
+    #         cls,
+    #         user_id: str,
+    #         login: str = None,
+    #         password: str = None,
+    #         first_name: str = None,
+    #         birth_date: date = None,
+    #         last_name: str = None,
+    #         middle_name: str = None,
+    #         work_experience: int = None,
+    # ):
+    #     pass
 
-    @staticmethod
-    def get_user(user_id: str) -> dict[str, any]:
-        return Database.USERS_DATABASE[user_id]
-
-    @staticmethod
-    def fill_database_with_test_data() -> None:
+    @classmethod
+    def delete_user(cls, user_id: int):
+        cls._USERS_DATABASE.pop(user_id)
+    
+    @classmethod
+    def fill_database_with_test_data(cls) -> None:
         """
         Загрузить тестовые данные в бд из заранее заготовленного файла.
         Так как данные берутся с json тут всё в стрингах, в преобразовании смысла пока не вижу.
@@ -41,15 +71,10 @@ class Database:
             None
         """
         with open(f'{APP_DIR}/internal/repositories/db/data/test_data.json', 'r') as file:
-            Database.USERS_DATABASE = json.load(file)
-        for key in Database.USERS_DATABASE.keys():
-            Database.USERS_DATABASE[key]['birth_date'] = datetime.strptime(Database.USERS_DATABASE[key]['birth_date'], "%Y-%m-%d").date()
+            test_data = json.load(file)
+        for key in test_data.keys():
+            cls._counter += 1
+
+            model = CreateProfileRequest(**test_data[key])
+            cls._USERS_DATABASE[int(key)] = model.model_dump()
         print("Data filled successfully")
-
-    @staticmethod
-    def save_data_base(filename: str):
-        pass
-
-    @staticmethod
-    def load_data_base(filename: str):
-        pass

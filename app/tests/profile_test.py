@@ -1,8 +1,8 @@
-from internal.repositories.db.db import Database
+from internal.repositories.db.db import UserDatabase
 from tests import client
 
 
-Database.fill_database_with_test_data()
+UserDatabase.fill_database_with_test_data()
 get_test_data = {
     'login': 'MonkaS',
     'last_name': 'naumov',

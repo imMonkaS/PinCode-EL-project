@@ -3,12 +3,12 @@ import sys
 import uvicorn
 
 from config.config import config
-from internal.repositories.db.db import Database
+from internal.repositories.db.db import UserDatabase
 
 
 def main():
     if len(sys.argv) > 1 and 'test_data' in sys.argv:
-        Database.fill_database_with_test_data()
+        UserDatabase.fill_database_with_test_data()
 
     uvicorn.run(
         'initialize:create_app',
