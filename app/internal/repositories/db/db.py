@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, date
+from datetime import date
 
 from config.config import APP_DIR
 from internal.routers.user.schemas.request.create import CreateProfileRequest
@@ -60,7 +60,7 @@ class UserDatabase:
     @classmethod
     def delete_user(cls, user_id: int):
         cls._USERS_DATABASE.pop(user_id)
-    
+
     @classmethod
     def fill_database_with_test_data(cls) -> None:
         """
@@ -77,4 +77,3 @@ class UserDatabase:
 
             model = CreateProfileRequest(**test_data[key])
             cls._USERS_DATABASE[int(key)] = model.model_dump()
-        print("Data filled successfully")

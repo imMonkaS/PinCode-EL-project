@@ -1,7 +1,6 @@
 from typing import Annotated
 
 from fastapi import Depends
-
 from internal.repositories.db.user import UserRepository
 from internal.services.user import UserService
 

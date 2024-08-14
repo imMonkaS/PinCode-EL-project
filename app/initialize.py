@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-
 from internal.routers.router import router
 
 

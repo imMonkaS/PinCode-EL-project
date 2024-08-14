@@ -1,7 +1,6 @@
 import sys
 
 import uvicorn
-
 from config.config import config
 from internal.repositories.db.db import UserDatabase
 

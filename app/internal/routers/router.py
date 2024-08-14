@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-
 from internal.routers.status import status_router
 from internal.routers.user.router import user_router
 

@@ -1,7 +1,6 @@
 from internal.repositories.db.db import UserDatabase
 from tests import client
 
-
 UserDatabase.fill_database_with_test_data()
 get_test_data = {
     'login': 'MonkaS',
@@ -14,39 +13,39 @@ get_test_data = {
 }
 
 create_test_data = {
-    "login": "login",
-    "password": "password",
-    "last_name": "last_name",
-    "first_name": "first_name",
-    "middle_name": "middle_name",
-    "birth_date": "1998-08-20",
-    "work_experience": 5
+    'login': 'login',
+    'password': 'password',
+    'last_name': 'last_name',
+    'first_name': 'first_name',
+    'middle_name': 'middle_name',
+    'birth_date': '1998-08-20',
+    'work_experience': 5
 }
 
 get_create_test_data = {
-    "login": "login",
-    "last_name": "last_name",
-    "first_name": "first_name",
-    "middle_name": "middle_name",
-    "birth_date": "1998-08-20",
-    "work_experience": 5,
-    "age": 25
+    'login': 'login',
+    'last_name': 'last_name',
+    'first_name': 'first_name',
+    'middle_name': 'middle_name',
+    'birth_date': '1998-08-20',
+    'work_experience': 5,
+    'age': 25
 }
 
 create_test_data_least_params = {
-    "login": "login",
-    "password": "password",
-    "first_name": "first_name",
-    "birth_date": "1998-08-20",
+    'login': 'login',
+    'password': 'password',
+    'first_name': 'first_name',
+    'birth_date': '1998-08-20',
 }
 get_create_test_data_least_params = {
-    "login": "login",
-    "last_name": None,
-    "first_name": "first_name",
-    "middle_name": None,
-    "birth_date": "1998-08-20",
-    "work_experience": 0,
-    "age": 25
+    'login': 'login',
+    'last_name': None,
+    'first_name': 'first_name',
+    'middle_name': None,
+    'birth_date': '1998-08-20',
+    'work_experience': 0,
+    'age': 25
 }
 
 
@@ -59,13 +58,13 @@ def test_get():
 
 def test_create():
     post_response = client.post('/user/profile/', json=create_test_data)
-    get_response = client.get(f'/user/profile/{post_response.json()['user_id']}')
+    get_response = client.get(f"/user/profile/{post_response.json()['user_id']}")
     assert get_response.status_code == 200
     assert get_response.json() == get_create_test_data
 
 
 def test_create_with_least_params():
     post_response = client.post('/user/profile/', json=create_test_data_least_params)
-    get_response = client.get(f'/user/profile/{post_response.json()['user_id']}')
+    get_response = client.get(f"/user/profile/{post_response.json()['user_id']}")
     assert get_response.status_code == 200
     assert get_response.json() == get_create_test_data_least_params
