@@ -12,7 +12,7 @@ cd your-repo
 
 4. Переопределить настройки через config
 ```bash
-cp app/config/config_tmpl.json app/config/config.json
+cp app/config/config.env.tmpl app/config/config.env
 ```
 
 5. Установить poetry, если его еще нет на вашей системе (лучше почитайте официальную документацию)
