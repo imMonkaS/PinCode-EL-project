@@ -86,4 +86,7 @@ class UserRepository:
         return self.db.replace_user(user_id, **data)
 
     def delete(self, user_id: int) -> int:
-        return self.db.delete_user(user_id)
+        try:
+            return self.db.delete_user(user_id)
+        except KeyError:
+            raise HTTPException(status_code=404, detail='User does not exist')
