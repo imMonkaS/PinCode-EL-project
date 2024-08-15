@@ -17,10 +17,16 @@ class AppException(Exception):
 class UnknownException(AppException):
     msg = 'Service error'
     error_code = 1
-    status_code = 520
+    status_code = 500
 
 
 class CustomValidationException(AppException):
     msg = 'Pydantic validation error'
     error_code = 2
     status_code = 422
+
+
+class UserDoesNotExistException(AppException):
+    msg = 'User does not exist'
+    error_code = 3
+    status_code = 404

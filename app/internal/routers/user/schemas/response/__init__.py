@@ -1,1 +1,1 @@
-from internal.routers.user.schemas.response.get import GetUserResponse
+from internal.routers.user.schemas.response.user import GetUserResponse

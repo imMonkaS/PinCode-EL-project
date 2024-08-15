@@ -1,6 +1,10 @@
 from datetime import date
 
-from internal.repositories.db.models import BaseUser
+from internal.models import BaseUser
+
+
+class CreateProfileRequest(BaseUser):
+    password: str
 
 
 class UpdateUserRequest(BaseUser, validate_assignment=True):

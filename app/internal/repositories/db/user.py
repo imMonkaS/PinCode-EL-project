@@ -1,6 +1,6 @@
 from datetime import date
 
-from fastapi import HTTPException
+from internal.core.exceptions import UserDoesNotExistException
 from internal.repositories.db.db import UserDatabase
 
 
@@ -52,7 +52,7 @@ class UserRepository:
         try:
             return self.db.get_user(user_id)
         except KeyError:
-            raise HTTPException(status_code=404, detail='User does not exist')
+            raise UserDoesNotExistException
 
     def update(
             self,
@@ -127,4 +127,4 @@ class UserRepository:
         try:
             return self.db.delete_user(user_id)
         except KeyError:
-            raise HTTPException(status_code=404, detail='User does not exist')
+            raise UserDoesNotExistException

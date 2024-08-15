@@ -110,38 +110,23 @@ class UserDatabase:
         Returns:
             Количество измененных полей.
         """
+        new_data = {
+            'login': login,
+            'password': password,
+            'first_name': first_name,
+            'birth_date': birth_date,
+            'last_name': last_name,
+            'middle_name': middle_name,
+            'work_experience': work_experience
+        }
+        new_data = {key: value for key, value in new_data.items() if value is not None}
 
-        tmp_model = UpdateUserRequest.model_validate(cls._USERS_DATABASE[user_id])
-        changes_counter = 0
-        if login:
-            tmp_model.login = login
-            changes_counter += 1
+        model = UpdateUserRequest.model_validate(cls._USERS_DATABASE[user_id])
+        new_model = model.model_copy(update=new_data)
 
-        if password:
-            tmp_model.password = password
-            changes_counter += 1
+        cls._USERS_DATABASE[user_id] = new_model.model_dump()
 
-        if first_name:
-            tmp_model.first_name = first_name
-            changes_counter += 1
-
-        if birth_date:
-            tmp_model.birth_date = birth_date
-            changes_counter += 1
-
-        if last_name:
-            tmp_model.last_name = last_name
-            changes_counter += 1
-
-        if middle_name:
-            tmp_model.middle_name = middle_name
-            changes_counter += 1
-
-        if work_experience:
-            tmp_model.work_experience = work_experience
-            changes_counter += 1
-        cls._USERS_DATABASE[user_id] = tmp_model.model_dump()
-        return changes_counter
+        return len(new_data.values())
 
     @classmethod
     def delete_user(cls, user_id: int) -> int:
