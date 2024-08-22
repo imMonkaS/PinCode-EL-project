@@ -1,12 +1,12 @@
-from internal.models import BaseUser
+from internal.models.user import GetUserModel
 from pydantic import BaseModel
-
-
-class GetUserResponse(BaseUser):
-    age: int
 
 
 class DefaultUserResponse(BaseModel):
     status: int
     message: str
     data: dict | list | None = None
+
+
+class GetUserResponse(DefaultUserResponse):
+    data: GetUserModel

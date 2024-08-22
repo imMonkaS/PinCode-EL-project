@@ -10,3 +10,7 @@ class BaseUser(BaseModel):
     middle_name: str | None = None
     birth_date: date
     work_experience: int = 0
+
+
+class GetUserModel(BaseUser):
+    age: int

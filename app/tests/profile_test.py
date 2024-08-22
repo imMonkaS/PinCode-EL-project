@@ -1,3 +1,6 @@
+from datetime import date, datetime
+
+from dateutil.relativedelta import relativedelta
 from tests import client
 
 create_test_data = {
@@ -11,13 +14,17 @@ create_test_data = {
 }
 
 get_create_test_data = {
-    'login': 'login',
-    'last_name': 'last_name',
-    'first_name': 'first_name',
-    'middle_name': 'middle_name',
-    'birth_date': '1998-08-20',
-    'work_experience': 5,
-    'age': 25
+    'status': 200,
+    'message': 'Success',
+    'data': {
+        'login': 'login',
+        'last_name': 'last_name',
+        'first_name': 'first_name',
+        'middle_name': 'middle_name',
+        'birth_date': '1998-08-20',
+        'work_experience': 5,
+        'age': relativedelta(datetime.today(), date(1998, 8, 20)).years
+    }
 }
 
 create_test_data_least_params = {
@@ -28,13 +35,17 @@ create_test_data_least_params = {
 }
 
 get_create_test_data_least_params = {
-    'login': 'login',
-    'last_name': None,
-    'first_name': 'first_name',
-    'middle_name': None,
-    'birth_date': '1998-08-20',
-    'work_experience': 0,
-    'age': 25
+    'status': 200,
+    'message': 'Success',
+    'data': {
+        'login': 'login',
+        'last_name': None,
+        'first_name': 'first_name',
+        'middle_name': None,
+        'birth_date': '1998-08-20',
+        'work_experience': 0,
+        'age': relativedelta(datetime.today(), date(1998, 8, 20)).years
+    }
 }
 
 validation_error_response = {
@@ -89,13 +100,17 @@ def test_update_user():
     }
     get_response = client.get(f"/user/profile/{post_response.json()['data']['user_id']}")
     assert get_response.json() == {
-        'login': 'login2',
-        'last_name': 'last_name',
-        'first_name': 'first_name',
-        'middle_name': 'middle_name',
-        'birth_date': '1998-08-20',
-        'work_experience': 12,
-        'age': 25
+        'status': 200,
+        'message': 'Success',
+        'data': {
+            'login': 'login2',
+            'last_name': 'last_name',
+            'first_name': 'first_name',
+            'middle_name': 'middle_name',
+            'birth_date': '1998-08-20',
+            'work_experience': 12,
+            'age': relativedelta(datetime.today(), date(1998, 8, 20)).years
+        }
     }
 
 
@@ -109,13 +124,17 @@ def test_replace_user():
     })
     get_response = client.get(f"/user/profile/{post_response.json()['data']['user_id']}")
     assert get_response.json() == {
-        'login': 'replace',
-        'last_name': None,
-        'first_name': 'replace',
-        'middle_name': None,
-        'birth_date': '1998-08-20',
-        'work_experience': 0,
-        'age': 25
+        'status': 200,
+        'message': 'Success',
+        'data': {
+            'login': 'replace',
+            'last_name': None,
+            'first_name': 'replace',
+            'middle_name': None,
+            'birth_date': '1998-08-20',
+            'work_experience': 0,
+            'age': relativedelta(datetime.today(), date(1998, 8, 20)).years
+        }
     }
 
 

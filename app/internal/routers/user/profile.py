@@ -34,7 +34,11 @@ def get_user_profile(
         id: int,
         service: UserServiceDependency
 ) -> GetUserResponse:
-    return service.get_by_id(id)
+    return GetUserResponse(
+        status=200,
+        message='Success',
+        data=service.get_by_id(id)
+    )
 
 
 # update

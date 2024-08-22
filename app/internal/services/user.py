@@ -1,8 +1,8 @@
 from datetime import date, datetime
 
 from dateutil.relativedelta import relativedelta
+from internal.models.user import GetUserModel
 from internal.repositories.db.user import UserRepository
-from internal.routers.user.schemas.response import GetUserResponse
 
 
 class UserService:
@@ -38,7 +38,7 @@ class UserService:
         )
         return user_id
 
-    def get_by_id(self, user_id: int) -> GetUserResponse:
+    def get_by_id(self, user_id: int) -> GetUserModel:
         """
         Возвращает информацтю о пользователе по id
 
@@ -49,7 +49,7 @@ class UserService:
 
         user_data.pop('password')
         user_data['age'] = relativedelta(datetime.today(), user_data['birth_date']).years
-        return GetUserResponse.model_validate(user_data)
+        return GetUserModel.model_validate(user_data)
 
     def update_by_id(
             self,
