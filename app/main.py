@@ -1,7 +1,7 @@
 import sys
 
 import uvicorn
-from config import config
+from config import settings
 from internal.repositories.db.db import UserDatabase
 
 
@@ -12,8 +12,8 @@ def main():
     uvicorn.run(
         'initialize:create_app',
         factory=True,
-        host=config.host,
-        port=config.port,
+        host=settings.HOST,
+        port=settings.PORT,
         workers=1
     )
 

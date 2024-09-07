@@ -1,7 +1,7 @@
 import json
 from datetime import date
 
-from config.config import APP_DIR
+from config import settings
 from internal.routers.user.schemas.request import (CreateProfileRequest,
                                                    UpdateUserRequest)
 
@@ -150,7 +150,7 @@ class UserDatabase:
             None
         """
 
-        with open(f'{APP_DIR}/internal/repositories/db/data/test_data.json', 'r') as file:
+        with open(f'{settings.APP_DIR}/internal/repositories/db/data/test_data.json', 'r') as file:
             test_data = json.load(file)
         for key in test_data.keys():
             cls._counter += 1
