@@ -10,7 +10,7 @@ from internal.schemas import (CreateUserSchema, ReplaceUserSchema,
 
 USER_PROFILE_ROUTER = APIRouter(
     prefix='/profile',
-    tags=['user_profile']
+    tags=['user profile']
 )
 
 
