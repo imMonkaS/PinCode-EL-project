@@ -1,10 +1,16 @@
 from typing import Annotated
 
 from fastapi import Depends
+from internal.dependencies.db import DBSessionDependency
 from internal.repositories.db.user import UserRepository
 from internal.services.user import UserService
 
-UserRepositoryDependency = Annotated[UserRepository, Depends(UserRepository)]
+
+def user_repository_dependency(session: DBSessionDependency):
+    return UserRepository(session=session)
+
+
+UserRepositoryDependency = Annotated[UserRepository, Depends(user_repository_dependency)]
 
 
 def user_service_dependency(repo: UserRepositoryDependency):
