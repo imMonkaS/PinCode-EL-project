@@ -1,5 +1,6 @@
 from fastapi.encoders import jsonable_encoder
 from internal.core.exceptions import (CustomValidationException,
+                                      IntegrityException, ProgrammingException,
                                       UnknownException,
                                       UserDoesNotExistException)
 from starlette.responses import JSONResponse, Response
@@ -30,6 +31,28 @@ def validation_exception_handler(request, exc) -> Response:
 
 def user_does_not_exist_exception_handler(request, exc) -> Response:
     exc = UserDoesNotExistException()
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            'message': exc.msg,
+            'error_code': exc.error_code
+        },
+    )
+
+
+def integrity_exception_handler(request, exc) -> Response:
+    exc = IntegrityException()
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            'message': exc.msg,
+            'error_code': exc.error_code
+        },
+    )
+
+
+def programming_exception_handler(request, exc) -> Response:
+    exc = ProgrammingException()
     return JSONResponse(
         status_code=exc.status_code,
         content={
