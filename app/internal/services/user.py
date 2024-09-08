@@ -1,120 +1,90 @@
-from datetime import date, datetime
-
-from dateutil.relativedelta import relativedelta
-from internal.models.user import GetUserModel
 from internal.repositories.db.user import UserRepository
+from internal.schemas.user import (CreateUserSchema, GetUserSchema,
+                                   ReplaceUserSchema, UpdateUserSchema)
 
 
 class UserService:
     """ Сервис для работы с пользователем, зависит от репозитория"""
 
     def __init__(self, user_repo: UserRepository):
-        self._user_repository = user_repo
+        self._user_repo: UserRepository = user_repo
 
-    def create(
+    async def create(
             self,
-            login: str,
-            password: str,
-            first_name: str,
-            birth_date: date,
-            last_name: str = None,
-            middle_name: str = None,
-            work_experience: int = 0,
-    ) -> int:
+            data: CreateUserSchema
+    ) -> GetUserSchema:
         """
         Создать пользователя по параметрам
 
         Returns:
-            id созданного пользователя
+            Созданный пользователь
         """
-        user_id = self._user_repository.create_one(
-            login=login,
-            password=password,
-            first_name=first_name,
-            birth_date=birth_date,
-            last_name=last_name,
-            middle_name=middle_name,
-            work_experience=work_experience
-        )
-        return user_id
+        user = await self._user_repo.create_one(data.model_dump(exclude_none=True))
+        user.calculate_age(user.birth_date)
 
-    def get_by_id(self, user_id: int) -> GetUserModel:
+        return user
+
+    async def get_by_id(self, user_id: int) -> GetUserSchema:
         """
         Возвращает информацтю о пользователе по id
 
         Returns:
-            Информация о польозвателе, валидируется с помощью pydantic
+            Информация о польозвателе
         """
-        user_data = self._user_repository.get_one(user_id).copy()
+        user = await self._user_repo.get_by_id(user_id)
+        user.calculate_age(user.birth_date)
 
-        user_data.pop('password')
-        user_data['age'] = relativedelta(datetime.today(), user_data['birth_date']).years
-        return GetUserModel.model_validate(user_data)
+        return user
 
-    def update_by_id(
+    async def get_all(self) -> list[GetUserSchema]:
+        users = await self._user_repo.get_all()
+        for user in users:
+            user.calculate_age(user.birth_date)
+
+        return users
+
+    async def update_by_id(
             self,
             user_id: int,
-            login: str = None,
-            password: str = None,
-            first_name: str = None,
-            birth_date: date = None,
-            last_name: str = None,
-            middle_name: str = None,
-            work_experience: int = None,
-    ) -> int:
+            data: UpdateUserSchema
+    ) -> GetUserSchema:
         """
         Обновить информацию о пользователе по id
 
         Returns:
-            Количество обновленных параметров
+            Информация об обновленном пользователе
         """
-
-        return self._user_repository.update(
+        user = await self._user_repo.update_by_id(
             user_id,
-            login=login,
-            password=password,
-            first_name=first_name,
-            birth_date=birth_date,
-            last_name=last_name,
-            middle_name=middle_name,
-            work_experience=work_experience
+            data.model_dump(exclude_none=True)
         )
+        user.calculate_age(user.birth_date)
 
-    def replace_by_id(
+        return user
+
+    async def replace_by_id(
             self,
             user_id: int,
-            login: str,
-            password: str,
-            first_name: str,
-            birth_date: date,
-            last_name: str = None,
-            middle_name: str = None,
-            work_experience: int = 0,
-    ) -> int:
+            data: ReplaceUserSchema
+    ) -> GetUserSchema:
         """
         Заменить информацию о пользователе
 
         Returns:
-            id пользователя, которого заменили
+            Информация о заменённом пользователе
         """
 
-        return self._user_repository.replace(
+        user = await self._user_repo.update_by_id(
             user_id,
-            login=login,
-            password=password,
-            first_name=first_name,
-            birth_date=birth_date,
-            last_name=last_name,
-            middle_name=middle_name,
-            work_experience=work_experience
+            data.model_dump()
         )
+        user.calculate_age(user.birth_date)
 
-    def delete_by_id(self, user_id: int):
+        return user
+
+    async def delete_by_id(self, user_id: int) -> None:
         """
         Удалить пользователя по id
-
-        Returns:
-            id пользователя, которого удалили
         """
 
-        return self._user_repository.delete(user_id)
+        await self._user_repo.delete_by_id(user_id)

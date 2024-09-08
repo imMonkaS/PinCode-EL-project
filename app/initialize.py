@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from internal.api.router import ROUTER
 from internal.core.exception_handlers import (
     unknown_exception_handler, user_does_not_exist_exception_handler,
     validation_exception_handler)
 from internal.core.exceptions import UserDoesNotExistException
-from internal.routers.router import ROUTER
 
 
 def add_exceptions(app: FastAPI):

@@ -1,0 +1,19 @@
+---
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_pincode_el
+    restart: always
+    ports:
+      - '${POSTGRES_PORT:-6500}:5432'
+    environment:
+      PGUSER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: user
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
