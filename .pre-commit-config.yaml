@@ -13,7 +13,7 @@ repos:
     rev: v0.3.1
     hooks:
     -   id: absolufy-imports
-        args: ['--application-directories', '.:app']
+        args: ['--application-directories', '.:src']
 
 - repo: https://github.com/pycqa/isort
   rev: 5.12.0
@@ -25,4 +25,4 @@ repos:
   hooks:
       - id: flake8
         additional_dependencies: [ 'flake8-quotes', 'flake8-print' ]
-        exclude: 'app/internal/repositories/db/migrations'
+        exclude: 'src/migrations'

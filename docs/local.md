@@ -12,7 +12,7 @@ cd your-repo
 
 4. Переопределить настройки через config
 ```bash
-cp app/config/config.env.tmpl app/config/config.env
+cp src/config/config.env.tmpl src/config/config.env
 ```
 
 5. Установить poetry, если его еще нет на вашей системе (лучше почитайте официальную документацию)
@@ -30,7 +30,12 @@ poetry run pre-commit install
 poetry run pytest
 ```
 
+9. Запустить базу данных postgres
+```bash
+docker-compose up --build
+```
+
 Теперь вы можете запустить сервер FastAPI:
 ```bash
-poetry run python3 app/main.py
+poetry run python3 src/main.py
 ```

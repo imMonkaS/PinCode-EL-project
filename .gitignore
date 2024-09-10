@@ -14,4 +14,4 @@ poetry.toml
 *.pot
 temp/
 poetry.lock
-app/config/config.env
+src/config/config.env
